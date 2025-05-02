@@ -1,0 +1,1 @@
+<h1>Ini adalah halaman {{ $slot }}</h1>
