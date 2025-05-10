@@ -7,6 +7,8 @@ use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SiswaImport;
 
 class SiswaController extends Controller
 {
@@ -44,7 +46,9 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'id' => 'required|string|max:10',
             'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
@@ -62,7 +66,9 @@ class SiswaController extends Controller
     public function update(Request $request, Siswa $siswa)
     {
         $request->validate([
+            'id' => 'required|integer|max:10',
             'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
@@ -76,5 +82,12 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('dashboard.index', ['tab' => 'siswa'])->with('success', 'Siswa berhasil dihapus!');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|file|mimes:xlsx,csv']);
+        Excel::import(new SiswaImport, $request->file('file'));
+        return back()->with('success', 'Import berhasil');
     }
 }

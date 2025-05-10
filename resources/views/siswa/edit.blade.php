@@ -10,9 +10,21 @@
     @method('PUT')
 
     <div>
+        <label class="block mb-1">NIS</label>
+        <input type="text" name="id" class="input input-bordered w-full" value="{{ old('id', $siswa->id) }}" required>
+        @error('id') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+    </div>
+
+    <div>
         <label class="block mb-1">Nama</label>
         <input type="text" name="nama" class="input input-bordered w-full" value="{{ old('nama', $siswa->nama) }}" required>
         @error('nama') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+    </div>
+
+    <div>
+        <label class="block mb-1">Tanggal Lahir</label>
+        <input type="text" name="tanggal_lahir" class="input input-bordered w-full" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}" required>
+        @error('tanggal_lahir') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
     <div>

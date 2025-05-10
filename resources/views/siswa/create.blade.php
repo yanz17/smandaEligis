@@ -8,9 +8,21 @@
 <form action="{{ route('siswa.store') }}" method="POST" class="space-y-4">
     @csrf
     <div>
+        <label class="block mb-1">NIS</label>
+        <input type="text" name="id" class="input input-bordered w-full" value="{{ old('id') }}" required>
+        @error('id') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+    </div>
+
+    <div>
         <label class="block mb-1">Nama</label>
         <input type="text" name="nama" class="input input-bordered w-full" value="{{ old('nama') }}" required>
         @error('nama') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+    </div>
+
+    <div>
+        <label class="block mb-1">Tanggal Lahir</label>
+        <input type="date" name="tanggal_lahir" class="input input-bordered w-full" value="{{ old('tanggal_lahir') }}" required>
+        @error('tanggal_lahir') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
     <div>

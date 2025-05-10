@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Nilai;
+use App\Imports\NilaiImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class NilaiController extends Controller
@@ -92,5 +94,12 @@ class NilaiController extends Controller
         $nilai->delete();
 
         return redirect()->route('dashboard.index', ['tab' => 'nilai'])->with('success', 'Nilai berhasil dihapus!');
-    }  
+    }
+    
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|file|mimes:xls,xlsx']);
+        Excel::import(new NilaiImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Import nilai berhasil!');
+    }
 }

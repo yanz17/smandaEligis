@@ -8,6 +8,9 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArasController;
+use App\Http\Controllers\EligibleController;
+use App\Http\Controllers\CekStatusController;
+use App\Models\Eligible;
 use App\Models\Nilai;
 
 Route::get('/', function () {
@@ -24,6 +27,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Cek Status Eligible
+Route::get('/cek-status', [CekStatusController::class, 'form'])->name('cekstatus.form');
+Route::post('/cek-status', [CekStatusController::class, 'cek'])->name('cekstatus.cek');
 
 // Dashboard Routes
 Route::middleware(['auth'])->group(function () {
@@ -64,6 +71,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard/eligible', [ArasController::class, 'showEligible'])->name('dashboard.eligible');
         Route::post('/dashboard/eligible/simpan', [ArasController::class, 'simpanEligible'])->name('eligible.simpan');
 
+        Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
+        Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
+
+        Route::get('/export/eligible/mipa/excel', [EligibleController::class, 'exportMipaExcel'])->name('eligible.mipa.excel');
+        Route::get('/export/eligible/mipa/pdf', [EligibleController::class, 'exportMipaPdf'])->name('eligible.mipa.pdf');
+        Route::get('/export/eligible/ips/excel', [EligibleController::class, 'exportIpsExcel'])->name('eligible.ips.excel');
+        Route::get('/export/eligible/ips/pdf', [EligibleController::class, 'exportIpsPdf'])->name('eligible.ips.pdf');
 
         //Route::get('/dashboard/peringkat', [ArasController::class, 'getPerhitunganLengkap'])->name('dashboard.peringkat');
     });

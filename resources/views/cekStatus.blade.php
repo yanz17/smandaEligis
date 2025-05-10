@@ -15,17 +15,36 @@
     <div class="hero-overlay"></div>
     <div class="hero-content flex flex-col justify-center items-center bg-black/75 rounded-4xl md:w-2xl">
         <h1 class="text-white font-bold text-2xl md:text-4xl mt-4 mb-4">Status Eligible SNBP 2025</h1>
-        <form action="" method="post">
+
+        <form action="{{ route('cekstatus.cek') }}" method="post">
+            @csrf
             <section class="flex flex-col gap-1">
-                <label for="" class="text-sm md:text-lg font-medium text-white">Nomor Induk Siswa</label>
+                <label class="text-sm md:text-lg font-medium text-white">Nomor Induk Siswa</label>
                 <input
                     type="text"
-                    class="input validator input-sm w-3xs md:input-lg md:w-lg"
+                    name="id"
+                    class="input input-sm md:input-lg w-3xs md:w-lg"
                     required
                     placeholder="Masukkan NIS (10 digit)"
-                    title="NIS harus 10 digit"
+                    value="{{ old('id') }}"
                 />
-                <p class="validator-hint">NIS harus 10 digit</p>
+                @error('id')
+                    <p class="text-red-400">{{ $message }}</p>
+                @enderror
+            </section>
+            <section class="flex flex-col gap-1">
+                <label class="text-sm md:text-lg font-medium text-white">Tanggal Lahir</label>
+                <input
+                    type="date"
+                    name="tanggal_lahir"
+                    class="input input-sm md:input-lg w-3xs md:w-lg"
+                    required
+                    placeholder="Masukkan Tanggal Lahir"
+                    value="{{ old('tanggal_lahir') }}"
+                />
+                @error('tanggal_lahir')
+                    <p class="text-red-400">{{ $message }}</p>
+                @enderror
             </section>
             <section class="flex flex-col justify-center items-center gap-5 mb-2">
                 <button class="btn btn-primary btn-lg text-sm md:text-lg">Cek Status</button>

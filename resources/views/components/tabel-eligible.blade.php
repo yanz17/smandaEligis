@@ -1,21 +1,25 @@
-@props(['eligibles'])
+@props(['data'])
 
-<h2 class="text-lg font-bold mt-6">Siswa Eligible (Top 40%)</h2>
-<table class="table table-bordered mt-2">
+<table class="table w-full">
     <thead>
         <tr>
-            <th>No</th>
-            <th>Nama Siswa</th>
+            <th>Peringkat</th>
+            <th>Nama</th>
             <th>Hasil Akhir</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($eligibles as $i => $el)
+        @forelse ($data as $item)
             <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $el->siswa->nama }}</td>
-                <td>{{ number_format($el->hasil_akhir, 4) }}</td>
+                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                <td>{{ $item->siswa->nama }}</td>
+                <td>{{ number_format($item->hasil_akhir, 4) }}</td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="2" class="text-center text-gray-500">Tidak ada data eligible.</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
+{{ $data->withQueryString()->links() }}

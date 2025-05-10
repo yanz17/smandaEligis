@@ -52,5 +52,5 @@
         </tbody>
     </table>
 
-    {{ $nilais->appends(request()->except('page'))->links() }}
+    {{ $nilais->withQueryString()->links() }}
 </div>

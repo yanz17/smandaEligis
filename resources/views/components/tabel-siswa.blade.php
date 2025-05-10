@@ -7,6 +7,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>NIS</th>
                 <th>
                     <a href="{{ route('dashboard.index', array_merge(request()->all(), ['sort' => ($sort == 'asc' ? 'desc' : 'asc'), 'tab' => 'nilai'])) }}">
                         Nama
@@ -17,6 +18,7 @@
                         @endif
                     </a>
                 </th>
+                <th>Tanggal Lahir</th>
                 <th>Kelas</th>
                 <th colspan="2">Aksi</th>
             </tr>
@@ -25,7 +27,9 @@
             @forelse ($siswas as $index => $siswa)
                 <tr>
                     <td>{{ ($siswas->currentPage() - 1) * $siswas->perPage() + $index + 1 }}</td>
+                    <td>{{ $siswa->id }}</td>
                     <td>{{ $siswa->nama }}</td>
+                    <td>{{ $siswa->tanggal_lahir ?? '-' }}</td>
                     <td>{{ $siswa->kelas->nama_kelas ?? '-' }}</td>
                     <td>
                         <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-sm btn-info">Edit</a>
@@ -47,5 +51,5 @@
     </table>
 
     {{-- Pagination --}}
-    {{ $siswas->appends(request()->except('page'))->links() }}
+    {{ $siswas->withQueryString()->links() }}
 </div>
