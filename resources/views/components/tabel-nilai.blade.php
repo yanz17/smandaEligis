@@ -8,7 +8,8 @@
             <tr>
                 <th>No</th>
                 <th>
-                    <a href="{{ route('dashboard.index', array_merge(request()->all(), ['sort' => ($sort == 'asc' ? 'desc' : 'asc'), 'tab' => 'siswa'])) }}">
+                @if(auth()->user()->isGuruBK())
+                    <a href="{{ route('dashboard.index', array_merge(request()->all(), ['sort' => ($sort == 'asc' ? 'desc' : 'asc'), 'tab' => 'nilai'])) }}">
                         Nama
                         @if($sort == 'asc')
                             ▲
@@ -16,6 +17,18 @@
                             ▼
                         @endif
                     </a>
+                @endif
+
+                @if(auth()->user()->isWaliKelas())
+                    <a href="{{ route('dashboard.wakel', array_merge(request()->all(), ['sort' => ($sort == 'asc' ? 'desc' : 'asc'), 'tab' => 'nilai'])) }}">
+                        Nama
+                        @if($sort == 'asc')
+                            ▲
+                        @else
+                            ▼
+                        @endif
+                    </a>
+                @endif
                 </th>
                 <th>Sem 1</th>
                 <th>Sem 2</th>
@@ -23,7 +36,9 @@
                 <th>Sem 4</th>
                 <th>Sem 5</th>
                 <th>Prestasi</th>
+                @if(auth()->user()->isGuruBK())
                 <th colspan="2">Aksi</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -37,14 +52,16 @@
                     <td>{{ $nilai->sem_4 }}</td>
                     <td>{{ $nilai->sem_5 }}</td>
                     <td>{{ $nilai->prestasi }}</td>
-                    <td><a href="{{ route('nilai.edit', $nilai->id) }}" class="btn btn-sm btn-info">Edit</a></td>
-                    <td>
-                        <form action="{{ route('nilai.destroy', $nilai->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-error">Hapus</button>
-                        </form>
-                    </td>
+                    @if(auth()->user()->isGuruBK())
+                        <td><a href="{{ route('nilai.edit', $nilai->id) }}" class="btn btn-sm btn-info">Edit</a></td>
+                        <td>
+                            <form action="{{ route('nilai.destroy', $nilai->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-error">Hapus</button>
+                            </form>
+                        </td>
+                    @endif
                 </tr>
             @empty
                 <tr><td colspan="11" class="text-center">Tidak ada data nilai.</td></tr>

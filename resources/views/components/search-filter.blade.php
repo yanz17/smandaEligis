@@ -18,18 +18,27 @@
     >
 
     {{-- Filter berdasarkan kelas --}}
-    <select name="kelas_id" class="select select-bordered">
-        <option value="">Semua Kelas</option>
-        @foreach($kelas as $k)
-            <option value="{{ $k->id }}" {{ $selectedKelas == $k->id ? 'selected' : '' }}>
-                {{ $k->nama_kelas }}
-            </option>
-        @endforeach
-    </select>
+    @if(!auth()->user()->isWaliKelas())
+        <select name="kelas_id" class="select select-bordered">
+            <option value="">Semua Kelas</option>
+            @foreach($kelas as $k)
+                <option value="{{ $k->id }}" {{ $selectedKelas == $k->id ? 'selected' : '' }}>
+                    {{ $k->nama_kelas }}
+                </option>
+            @endforeach
+        </select>
+    @endif
 
     {{ $slot }}
 
     <button type="submit" class="btn btn-primary">Cari</button>
-    <a href="{{ route('dashboard.index', ['tab' => $tab]) }}" class="btn btn-outline">Reset</a>
+
+    @if(auth()->user()->isGuruBK())
+        <a href="{{ route('dashboard.index', ['tab' => $tab]) }}" class="btn btn-outline">Reset</a>
+    @endif
+    @if(auth()->user()->isWaliKelas())
+        <a href="{{ route('dashboard.wakel', ['tab' => $tab]) }}" class="btn btn-outline">Reset</a>
+    @endif
+    
 </form>
 

@@ -11,8 +11,13 @@
                 @if ($langkah === 'peringkat')
                     <th class="px-2 py-1">Peringkat</th>
                     <th class="px-2 py-1">Skor</th>
-                @elseif (isset($hasilAras[$langkah][0]) && is_array($hasilAras[$langkah][0]))
-                    @foreach ($hasilAras[$langkah][0] as $i => $val)
+                @elseif (
+                    $hasilAras[$langkah] instanceof \Illuminate\Pagination\LengthAwarePaginator &&
+                    isset($hasilAras[$langkah]->items()[0]) &&
+                    is_array($hasilAras[$langkah]->items()[0]) &&
+                    array_key_exists('data', $hasilAras[$langkah]->items()[0])
+                )
+                    @foreach ($hasilAras[$langkah]->items()[0]['data'] as $i => $val)
                         <th class="px-2 py-1">Kolom {{ $i + 1 }}</th>
                     @endforeach
                 @else
@@ -21,41 +26,31 @@
             </tr>
         </thead>
         <tbody>
-            @if ($langkah === 'peringkat')
-                @foreach ($hasilAras['peringkat'] as $item)
-                    <tr>
-                        <td class="px-2 py-1">{{ $item['nama'] }}</td>
+            @foreach ($hasilAras[$langkah] as $item)
+                <tr>
+                    <td class="px-2 py-1">{{ $item['nama'] ?? '-' }}</td>
+
+                    @if ($langkah === 'peringkat')
                         <td class="px-2 py-1">{{ $item['peringkat'] }}</td>
                         <td class="px-2 py-1">{{ round((float) $item['nilai'], 4) }}</td>
-                    </tr>
-                @endforeach
-            @else
-                @foreach ($hasilAras['siswa'] as $i => $nama)
-                    <tr>
-                        <td class="px-2 py-1">{{ $nama }}</td>
-
-                        @php $baris = $hasilAras[$langkah][$i] ?? null; @endphp
-
-                        @if (is_array($baris))
-                            @foreach ($baris as $val)
-                                <td class="px-2 py-1">{{ is_numeric($val) ? round((float) $val, 4) : $val }}</td>
-                            @endforeach
-                        @elseif (is_numeric($baris))
-                            <td class="px-2 py-1">{{ round((float) $baris, 4) }}</td>
-                        @else
-                            <td class="px-2 py-1">-</td>
-                        @endif
-                    </tr>
-                @endforeach
-            @endif
+                    @elseif (isset($item['data']) && is_array($item['data']))
+                        @foreach ($item['data'] as $val)
+                            <td class="px-2 py-1">{{ is_numeric($val) ? round((float) $val, 4) : $val }}</td>
+                        @endforeach
+                    @elseif (isset($item['data']) && is_numeric($item['data']))
+                        <td class="px-2 py-1">{{ round((float) $item['data'], 4) }}</td>
+                    @else
+                        <td class="px-2 py-1">-</td>
+                    @endif
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
     {{-- Paginator --}}
-    @if(method_exists($hasilAras[$langkah], 'links'))
+    @if ($hasilAras[$langkah] instanceof \Illuminate\Pagination\LengthAwarePaginator)
         <div class="mt-2">
-            {{ $hasilAras[$langkah]->withQueryString()->links() }}
+            {{ $hasilAras[$langkah]->appends(request()->except('page'))->links() }}
         </div>
     @endif
 @endif
-

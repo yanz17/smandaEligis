@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\SiswaImport;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
@@ -34,7 +35,13 @@ class SiswaController extends Controller
             $siswas = $query->get();
         }
 
-        return view('dashboard.index', compact('siswas', 'kelas', 'totalSiswas'));
+        $user = Auth::user();
+        if($user->role === 'gurubk'){
+            return view('dashboard.index', compact('siswas', 'kelas', 'totalSiswas'));
+        }elseif($user->role === 'wakel'){
+            return view('dashboard.wakel', compact('siswas', 'kelas', 'totalSiswas'));
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     public function create()
@@ -54,7 +61,13 @@ class SiswaController extends Controller
 
         Siswa::create($request->all());
 
-        return redirect()->route('dashboard.index', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+        $user = Auth::user();
+        if($user->role === 'gurubk'){
+            return redirect()->route('dashboard.index', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+        }elseif($user->role === 'wakel'){
+            return redirect()->route('dashboard.wakel', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+        }
+
     }
 
     public function edit(Siswa $siswa)

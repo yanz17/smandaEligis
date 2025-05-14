@@ -108,18 +108,29 @@ class ArasController extends Controller
         return $weighted;
     }
 
+    private function paginate(Collection $items, int $perPage, int $currentPage)
+    {
+        $offset = ($currentPage - 1) * $perPage;
+        return new LengthAwarePaginator(
+            $items->slice($offset, $perPage)->values(),
+            $items->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+    }
+
     public function getPerhitunganLengkapPerJurusan(string $jurusan)
     {
         $data = Nilai::whereHas('siswa.kelas', fn($q) => $q->where('jurusan', $jurusan))
             ->orderBy('siswa_id') 
             ->with('siswa.kelas')->get();
-    
+
         if ($data->isEmpty()) return [];
-    
+
         $matrix = [];
         $siswaList = [];
-        $siswaIds = [];
-    
+
         foreach ($data as $nilai) {
             $matrix[] = [
                 $nilai->sem_1,
@@ -129,46 +140,59 @@ class ArasController extends Controller
                 $nilai->sem_5,
                 $nilai->prestasi
             ];
-            $siswaList[] = $nilai->siswa->nama;
-            $siswaIds[] = $nilai->siswa->id;
+            $siswaList[] = [
+                'id' => $nilai->siswa->id,
+                'nama' => $nilai->siswa->nama
+            ];
         }
-    
+
         $weights = [18, 18, 18, 18, 18, 10];
         $normalized = $this->normalize($matrix);
         $weighted = $this->applyWeights($normalized, $weights);
         $optimal = array_map('array_sum', $weighted);
         $max = max($optimal) ?: 1;
         $utility = array_map(fn($val) => $val / $max, $optimal);
-    
+
+        // Bentuk peringkat
         $peringkat = [];
-        foreach ($siswaList as $i => $nama) {
+        foreach ($siswaList as $i => $siswa) {
             $peringkat[] = [
-                'siswa_id' => $siswaIds[$i],
-                'nama' => $nama,
+                'siswa_id' => $siswa['id'],
+                'nama' => $siswa['nama'],
                 'nilai' => $utility[$i],
-                'peringkat' => 0,
             ];
         }
-    
+
+        // Urutkan peringkat
         usort($peringkat, fn($a, $b) => $b['nilai'] <=> $a['nilai']);
+
         foreach ($peringkat as $i => &$item) {
             $item['peringkat'] = $i + 1;
         }
-    
+
+        // Gabungkan nama siswa + data di setiap langkah
+        $gabungData = function (array $source) use ($siswaList) {
+            return collect($source)->map(function ($row, $i) use ($siswaList) {
+                return [
+                    'nama' => $siswaList[$i]['nama'] ?? 'Tanpa Nama',
+                    'data' => is_array($row) ? $row : [$row],
+                ];
+            });
+        };
+
+        // Pagination
         $currentPage = request()->get('page', 1);
         $perPage = 10;
-    
-        $offset = ($currentPage - 1) * $perPage;
-        
+
         return [
-            'matrix' => new LengthAwarePaginator(array_slice($matrix, $offset, $perPage), count($matrix), $perPage, $currentPage),
-            'normalized' => new LengthAwarePaginator(array_slice($normalized, $offset, $perPage), count($normalized), $perPage, $currentPage),
-            'weighted' => new LengthAwarePaginator(array_slice($weighted, $offset, $perPage), count($weighted), $perPage, $currentPage),
-            'optimal' => new LengthAwarePaginator(array_slice($optimal, $offset, $perPage), count($optimal), $perPage, $currentPage),
-            'utility' => new LengthAwarePaginator(array_slice($utility, $offset, $perPage), count($utility), $perPage, $currentPage),
-            'peringkat' => new LengthAwarePaginator(array_slice($peringkat, $offset, $perPage), count($peringkat), $perPage, $currentPage),
-            'siswa' => new LengthAwarePaginator(array_slice($siswaList, $offset, $perPage), count($siswaList), $perPage, $currentPage),
+            'matrix' => $this->paginate($gabungData($matrix), $perPage, $currentPage),
+            'normalized' => $this->paginate($gabungData($normalized), $perPage, $currentPage),
+            'weighted' => $this->paginate($gabungData($weighted), $perPage, $currentPage),
+            'optimal' => $this->paginate($gabungData($optimal), $perPage, $currentPage),
+            'utility' => $this->paginate($gabungData($utility), $perPage, $currentPage),
+            'peringkat' => $this->paginate(collect($peringkat), $perPage, $currentPage),
         ];
     }
+
 
 }

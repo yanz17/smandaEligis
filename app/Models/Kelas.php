@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Siswa;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,7 @@ class Kelas extends Model
         return $this->belongsTo(related: User::class, foreignKey: 'user_id');
     }
 
-    public function siswa()
+    public function siswas()
     {
         return $this->hasMany(related: Siswa::class);
     }

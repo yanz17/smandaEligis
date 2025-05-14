@@ -56,7 +56,6 @@ class DashboardController extends Controller
             ->paginate(10, ['*'], 'siswa_page')
             ->appends(request()->except('page'));
     } elseif ($tab === 'nilai') {
-
         $nilais = Nilai::with('siswa.kelas')
             ->when($searchNilai, fn($query) => $query->whereHas('siswa', fn($q) => $q->where('nama', 'like', "%$searchNilai%")))
             ->when($kelasId, fn($query) => $query->whereHas('siswa', fn($q) => $q->where('kelas_id', $kelasId)))

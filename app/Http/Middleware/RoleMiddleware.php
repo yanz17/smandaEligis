@@ -11,23 +11,17 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Ambil user yang login
         $user = Auth::user();
 
-        // Kalau belum login atau user tidak ditemukan
         if (!$user) {
             return redirect('/login')->with('error', 'Kamu harus login dulu.');
         }
 
-        // Ambil role yang dibutuhkan dari parameter pertama
-        $role = $roles[0] ?? null;
-
-        // Kalau role user tidak sama, tendang
-        if ($role && $user->role !== $role) {
-            return redirect('/login')->with('error', 'Kamu tidak punya akses.');
+        // Jika role user tidak ada di daftar role yang diperbolehkan
+        if (!in_array($user->role, $roles)) {
+            return redirect('/')->with('error', 'Kamu tidak punya akses.');
         }
 
-        // Kalau semua aman, lanjut
         return $next($request);
     }
 }

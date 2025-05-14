@@ -40,6 +40,9 @@
                 <div>
                     <h2 class="text-xl font-semibold mb-4">Selamat Datang, {{ Auth::user()->name }}</h2>
                     <p>Ini adalah dashboard untuk Guru BK.</p>
+
+                    <h2 class="text-xl font-semibold mt-8 mb-4">Statistik Sekilas</h2>
+                    <x-chart-dashboard />
                 </div>
                 @endif
 
@@ -108,7 +111,6 @@
                 @endif
 
                 @if ($tab === 'peringkat_mipa')
-                <h4>Debug hasilAras:</h4>
                     <h2 class="text-xl font-semibold mb-4">Peringkat</h2>
 
                     <x-step-filter :search="$searchSiswa" :langkah="request('langkah')" :tab="'peringkat_mipa'" />

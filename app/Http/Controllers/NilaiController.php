@@ -8,6 +8,7 @@ use App\Models\Nilai;
 use App\Imports\NilaiImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NilaiController extends Controller
 {
@@ -36,7 +37,13 @@ class NilaiController extends Controller
             $nilais = $query->get();
         }
 
-        return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai'));
+        $user = Auth::user();
+        if($user->role === 'gurubk'){
+            return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai'));
+        }elseif($user->role === 'wakel'){
+            return view('dashboard.wakel', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai'));
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     public function create()
@@ -63,7 +70,13 @@ class NilaiController extends Controller
 
         Nilai::create($request->all());
 
-        return redirect()->route('dashboard.index', ['tab' => 'nilai'])->with('success', 'Nilai berhasil ditambahkan!');
+        $user = Auth::user();
+        if($user->role === 'gurubk'){
+            return redirect()->route('dashboard.index', ['tab' => 'nilai'])->with('success', 'Nilai berhasil ditambahkan!');
+        }elseif($user->role === 'wakel'){
+            return redirect()->route('dashboard.wakel', ['tab' => 'nilai'])->with('success', 'Nilai berhasil ditambahkan!');
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     public function edit(Nilai $nilai)

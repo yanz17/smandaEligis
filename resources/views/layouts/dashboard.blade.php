@@ -7,22 +7,16 @@
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tambah ini di <head> -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 </head>
-<body>
-    <div class="drawer lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col p-4">
-            @include('partials.topbar')
-
-            <div class="p-6">
-                @yield('content')
-            </div>
-        </div> 
-        <div class="drawer-side">
-            @include('partials.sidebar')
+<body class="h-screen bg-slate-800">
+    <div class="card w-lg mx-auto bg-black">
+        <div class="px-8 py-5">
+            @yield('content')
         </div>
     </div>
 </body>
