@@ -12,39 +12,37 @@ use Illuminate\Support\Facades\Auth;
 
 class NilaiController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Nilai::with('siswa.kelas');
-        $kelas = Kelas::all();
+public function index(Request $request)
+{
+    $kelas = Kelas::all();
+    $sortOrder = $request->get('sort', 'asc');
 
-        if ($request->search) {
-            $query->whereHas('siswa', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->search . '%');
-            });
-        }
+    $query = Nilai::select('nilais.*', 'siswas.nama as siswa_nama', 'kelas.nama_kelas as kelas_namakelas')
+        ->join('siswas', 'siswas.id', '=', 'nilais.siswa_id')
+        ->join('kelas', 'kelas.id', '=', 'siswas.kelas_id')
+        ->where(function ($q) use ($request) {
+            if ($request->search) {
+                $q->where('siswas.nama', 'like', '%' . $request->search . '%');
+            }
+            if ($request->kelas_id) {
+                $q->where('siswas.kelas_id', $request->kelas_id);
+            }
+        })
+        ->orderBy('siswas.nama', $sortOrder);
 
-        if ($request->kelas_id) {
-            $query->whereHas('siswa', function ($q) use ($request) {
-                $q->where('kelas_id', $request->kelas_id);
-            });
-        }
+    $nilais = $query->paginate(10);
+    $totalNilai = $nilais->total();
 
-        $totalNilai = $query->count();
-
-        if ($totalNilai >= 50) {
-            $nilais = $query->paginate(10);
-        } else {
-            $nilais = $query->get();
-        }
-
-        $user = Auth::user();
-        if($user->role === 'gurubk'){
-            return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai'));
-        }elseif($user->role === 'wakel'){
-            return view('dashboard.wakel', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai'));
-        }
-        abort(403, 'Unauthorized action.');
+    $user = Auth::user();
+    if ($user->role === 'gurubk') {
+        return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
+    } elseif ($user->role === 'wakel') {
+        return view('dashboard.wakel', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
     }
+
+    abort(403, 'Unauthorized action.');
+}
+
 
     public function create()
     {

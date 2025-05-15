@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 </head>
 <body class="h-screen bg-slate-800">
-    <div class="card w-lg mx-auto bg-black">
+    <div class="card w-lg mx-auto bg-black text-white">
         <div class="px-8 py-5">
             @yield('content')
         </div>

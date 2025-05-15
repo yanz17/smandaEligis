@@ -13,36 +13,51 @@ use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Siswa::query()->with('kelas');
-        $kelas = Kelas::all();
+public function index(Request $request)
+{
+    $kelas = Kelas::all();
 
-        if ($request->search) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
-        }
+    // Ambil parameter
+    $search = $request->get('search_siswa', '');
+    $kelasId = $request->get('kelas_id', '');
+    $sortOrder = in_array($request->get('sort'), ['asc', 'desc']) ? $request->get('sort') : 'asc';
 
-        if ($request->kelas_id) {
-            $query->where('kelas_id', $request->kelas_id);
-        }
+    // Bangun query
+    $query = Siswa::query()->with('kelas');
 
-        // hitung total data
-        $totalSiswas = $query->count();
-
-        if ($totalSiswas >= 50) {
-            $siswas = $query->paginate(10);
-        } else {
-            $siswas = $query->get();
-        }
-
-        $user = Auth::user();
-        if($user->role === 'gurubk'){
-            return view('dashboard.index', compact('siswas', 'kelas', 'totalSiswas'));
-        }elseif($user->role === 'wakel'){
-            return view('dashboard.wakel', compact('siswas', 'kelas', 'totalSiswas'));
-        }
-        abort(403, 'Unauthorized action.');
+    if ($search) {
+        $query->where('nama', 'like', '%' . $search . '%');
     }
+
+    if ($kelasId) {
+        $query->where('kelas_id', $kelasId);
+    }
+
+    $query->orderBy('nama', $sortOrder);
+
+    // Hitung total
+    $totalSiswas = $query->count();
+
+    // Ambil data
+    if ($totalSiswas >= 50) {
+        $siswas = $query->paginate(10)->appends($request->query());
+    } else {
+        $siswas = $query->get();
+    }
+
+    // Kirim semua ke view
+    $data = compact('siswas', 'kelas', 'totalSiswas', 'search', 'kelasId', 'sortOrder');
+
+    $user = Auth::user();
+    if ($user->role === 'gurubk') {
+        return view('dashboard.index', $data);
+    } elseif ($user->role === 'wakel') {
+        return view('dashboard.wakel', $data);
+    }
+
+    abort(403, 'Unauthorized action.');
+}
+
 
     public function create()
     {

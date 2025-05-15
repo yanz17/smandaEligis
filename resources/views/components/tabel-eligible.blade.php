@@ -5,6 +5,7 @@
         <tr>
             <th>Peringkat</th>
             <th>Nama</th>
+            <th>Kelas</th>
             <th>Hasil Akhir</th>
         </tr>
     </thead>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                 <td>{{ $item->siswa->nama }}</td>
+                <td>{{ $item->siswa->kelas->nama_kelas }}</td>
                 <td>{{ number_format($item->hasil_akhir, 4) }}</td>
             </tr>
         @empty

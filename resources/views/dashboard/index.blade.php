@@ -52,7 +52,6 @@
                     <h2 class="text-xl font-semibold mb-4">Data User</h2>
                     @isset($users)
                         <x-tabel-user :users="$users" />
-                        {{ $users->appends(request()->except('page'))->links() }}
                     @endisset
                 </div>
                 @endif

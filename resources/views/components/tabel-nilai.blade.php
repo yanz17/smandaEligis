@@ -1,4 +1,4 @@
-@props(['nilais', 'sort'])
+@props(['nilais', 'sort' => 'asc'])
 
 <div>
     <a href="{{ route('nilai.create') }}" class="btn btn-primary mb-4">Tambah Nilai</a>

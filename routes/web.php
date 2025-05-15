@@ -12,6 +12,7 @@ use App\Http\Controllers\ArasController;
 use App\Http\Controllers\EligibleController;
 use App\Http\Controllers\CekStatusController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\KepalaSekolahController;
 use App\Models\Eligible;
 use App\Models\Nilai;
 
@@ -83,15 +84,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export/eligible/mipa/pdf', [EligibleController::class, 'exportMipaPdf'])->name('eligible.mipa.pdf');
         Route::get('/export/eligible/ips/excel', [EligibleController::class, 'exportIpsExcel'])->name('eligible.ips.excel');
         Route::get('/export/eligible/ips/pdf', [EligibleController::class, 'exportIpsPdf'])->name('eligible.ips.pdf');
-
-        //Chart Dashboard
-        Route::prefix('charts')->group(function () {
-            Route::get('/siswa-per-jurusan', [ChartController::class, 'siswaPerJurusan']);
-            Route::get('/eligible-per-jurusan', [ChartController::class, 'eligiblePerJurusan']);
-            Route::get('/siswa-per-kelas', [ChartController::class, 'siswaPerKelas']);
-            Route::get('/eligible-per-kelas', [ChartController::class, 'eligiblePerKelasGabungan']);
-            Route::get('/rata-rata-kriteria', [ChartController::class, 'rataRataKriteria']);
-        });
     });
     
     // Untuk Wali Kelas
@@ -107,7 +99,25 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [SiswaController::class, 'create'])->name('siswa.create');
         Route::post('/', [SiswaController::class, 'store'])->name('siswa.store');
     });
+    
+    //Guru BK x Kepala Sekolah
+    Route::middleware(['auth', 'role:gurubk,kepsek'])->group(function () {
+        //Chart Dashboard
+        Route::prefix('charts')->group(function () {
+            Route::get('/siswa-per-jurusan', [ChartController::class, 'siswaPerJurusan']);
+            Route::get('/eligible-per-jurusan', [ChartController::class, 'eligiblePerJurusan']);
+            Route::get('/siswa-per-kelas', [ChartController::class, 'siswaPerKelas']);
+            Route::get('/eligible-per-kelas', [ChartController::class, 'eligiblePerKelasGabungan']);
+            Route::get('/rata-rata-kriteria', [ChartController::class, 'rataRataKriteria']);
+        });
+    });
 
     // Untuk Kepala Sekolah
-    Route::middleware('role:kepsek')->get('/dashboard/kepsek', [AuthController::class, 'dashboardKepsek'])->name('dashboard.kepsek');
+    Route::middleware(['auth', 'role:kepsek'])->group(function () {
+        Route::get('/dashboard/kepsek', [KepalaSekolahController::class, 'index'])->name('dashboard.kepsek');
+
+        //Daftar Eligible
+        Route::get('/dashboard/eligible', [ArasController::class, 'showEligible'])->name('dashboard.eligible');
+        Route::post('/dashboard/eligible/simpan', [ArasController::class, 'simpanEligible'])->name('eligible.simpan');
+    });
 });

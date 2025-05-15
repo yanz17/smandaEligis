@@ -150,10 +150,10 @@
                     Dashboard</a></li>
                 <li><a href="{{ route('dashboard.wakel', ['tab' => 'siswa']) }}" 
                     class="{{ request('tab') === 'siswa' ? 'active bg-base-300 font-bold' : '' }}"
-                    >Kelola Data Siswa</a></li>
+                    >Input Data Siswa</a></li>
                 <li><a href="{{ route('dashboard.wakel', ['tab' => 'nilai']) }}" 
                     class="{{ request('tab') === 'nilai' ? 'active bg-base-300 font-bold' : '' }}"
-                    >Kelola Nilai</a></li>
+                    >Input Nilai</a></li>
                 <li><a href="{{ route('dashboard.wakel', ['tab' => 'eligible']) }}" 
                     class="{{ request('tab') === 'eligible' ? 'active bg-base-300 font-bold' : '' }}"
                     >Daftar Eligible</a></li>
