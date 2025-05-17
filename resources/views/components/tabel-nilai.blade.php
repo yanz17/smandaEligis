@@ -1,3 +1,5 @@
+
+
 @props(['nilais', 'sort' => 'asc'])
 
 <div>
@@ -36,9 +38,7 @@
                 <th>Sem 4</th>
                 <th>Sem 5</th>
                 <th>Prestasi</th>
-                @if(auth()->user()->isGuruBK())
                 <th colspan="2">Aksi</th>
-                @endif
             </tr>
         </thead>
         <tbody>
@@ -60,6 +60,20 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-error">Hapus</button>
                             </form>
+                        </td>
+                    @endif
+
+                    @if(auth()->user()->isWaliKelas())
+                        <td>
+                            <form action="{{ route('nilai.requestDelete', $nilai->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin request hapus?')">Request Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('changeRequests.editRequest', ['model' => 'nilai', 'id' => $nilai->id]) }}" class="btn btn-warning btn-sm">
+                                Request Edit
+                            </a>
                         </td>
                     @endif
                 </tr>

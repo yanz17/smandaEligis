@@ -164,6 +164,10 @@
                         <x-tabel-eligible :data="$eligiblesMipa" />
                     @endif
                 @endif
+
+                @if ($tab === 'request')
+                    <x-change-request-table :requests="$requests"></x-change-request-table>
+                @endif
             </div>
         </div> 
 
@@ -199,6 +203,9 @@
                 <li><a href="{{ route('dashboard.index', ['tab' => 'eligible']) }}" 
                     class="{{ request('tab') === 'eligible' ? 'active bg-base-300 font-bold' : '' }}"
                     >Daftar Eligible</a></li>
+                <li><a href="{{ route('dashboard.index', ['tab' => 'request']) }}" 
+                    class="{{ request('tab') === 'request' ? 'active bg-base-300 font-bold' : '' }}"
+                    >Request</a></li>
             </ul>
         </div>
     </div>

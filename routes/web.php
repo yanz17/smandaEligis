@@ -13,6 +13,7 @@ use App\Http\Controllers\EligibleController;
 use App\Http\Controllers\CekStatusController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\KepalaSekolahController;
+use App\Http\Controllers\ChangeRequestController;
 use App\Models\Eligible;
 use App\Models\Nilai;
 
@@ -84,11 +85,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export/eligible/mipa/pdf', [EligibleController::class, 'exportMipaPdf'])->name('eligible.mipa.pdf');
         Route::get('/export/eligible/ips/excel', [EligibleController::class, 'exportIpsExcel'])->name('eligible.ips.excel');
         Route::get('/export/eligible/ips/pdf', [EligibleController::class, 'exportIpsPdf'])->name('eligible.ips.pdf');
+
+        //Approve Change Request
+        Route::get('/change-requests', [ChangeRequestController::class, 'index'])->name('changeRequests.index');
+        Route::post('/change-requests/{changeRequest}/approve', [ChangeRequestController::class, 'approve'])->name('changeRequests.approve');
+        Route::post('/change-requests/{changeRequest}/reject', [ChangeRequestController::class, 'reject'])->name('changeRequests.reject');
     });
     
     // Untuk Wali Kelas
     Route::middleware(['auth', 'role:wakel'])->group(function () {
         Route::get('/dashboard/wakel', [WaliKelasController::class, 'index'])->name('dashboard.wakel');
+
+        //Change Request    
+        Route::post('/nilai/{nilai}/request-edit', [NilaiController::class, 'requestEdit'])->name('nilai.requestEdit');
+        Route::post('/nilai/{nilai}/request-delete', [NilaiController::class, 'requestDelete'])->name('nilai.requestDelete');
+
+        //Change Request    
+        Route::post('/siswa/{siswa}/request-edit', [SiswaController::class, 'requestEdit'])->name('siswa.requestEdit');
+        Route::post('/siswa/{siswa}/request-delete', [SiswaController::class, 'requestDelete'])->name('siswa.requestDelete');
+        
+        Route::get('/request-edit/{model}/{id}', [ChangeRequestController::class, 'editRequest'])->name('changeRequests.editRequest');
+        Route::post('/request-edit/{model}/{id}', [ChangeRequestController::class, 'storeRequest'])->name('changeRequests.storeRequest');
     });
 
     //Guru BK x Wali Kelas

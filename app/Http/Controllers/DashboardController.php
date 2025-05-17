@@ -32,6 +32,8 @@ class DashboardController extends Controller
     $eligiblesIps = null;
     $hasilAras = [];
 
+    $requests = \App\Models\ChangeRequest::where('status', 'pending')->with('requester')->paginate(10);
+
     $aras = new ArasController();
     $hasilArasMipa = [];
     $hasilArasIps = [];
@@ -86,7 +88,7 @@ class DashboardController extends Controller
         'siswas', 'nilais', 'users',
         'searchSiswa', 'searchNilai', 'hasilArasMipa', 'hasilArasIps' , 
         'kelas', 'kelasId', 'sort',
-        'eligiblesMipa', 'eligiblesIps'
+        'eligiblesMipa', 'eligiblesIps', 'requests'
     ));
     }
 }

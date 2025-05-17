@@ -113,4 +113,47 @@ public function index(Request $request)
         Excel::import(new NilaiImport, $request->file('file'));
         return redirect()->back()->with('success', 'Import nilai berhasil!');
     }
+
+    public function requestEdit(Request $request, Nilai $nilai)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'wakel') abort(403);
+
+        $request->validate([
+            'sem_1' => 'nullable|numeric',
+            'sem_2' => 'nullable|numeric',
+            'sem_3' => 'nullable|numeric',
+            'sem_4' => 'nullable|numeric',
+            'sem_5' => 'nullable|numeric',
+            'prestasi' => 'nullable|numeric',
+        ]);
+
+        \App\Models\ChangeRequest::create([
+            'user_id' => $user->id,
+            'model_type' => 'Nilai',
+            'model_id' => $nilai->id,
+            'action' => 'edit',
+            'data' => $request->only(['sem_1', 'sem_2', 'sem_3', 'sem_4', 'sem_5', 'prestasi']),
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Permintaan edit nilai telah dikirim, tunggu persetujuan Guru BK.');
+    }
+
+    public function requestDelete(Nilai $nilai)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'wakel') abort(403);
+
+        \App\Models\ChangeRequest::create([
+            'user_id' => $user->id,
+            'model_type' => 'Nilai',
+            'model_id' => $nilai->id,
+            'action' => 'delete',
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Permintaan hapus nilai telah dikirim, tunggu persetujuan Guru BK.');
+    }
+
 }

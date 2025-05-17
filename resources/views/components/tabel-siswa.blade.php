@@ -33,9 +33,7 @@
                 </th>
                 <th>Tanggal Lahir</th>
                 <th>Kelas</th>
-                @if(auth()->user()->isGuruBK())
-                    <th colspan="2">Aksi</th>
-                @endif
+                <th colspan="2">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +54,20 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-error">Hapus</button>
                             </form>
+                        </td>
+                    @endif
+
+                    @if(auth()->user()->isWaliKelas())
+                        <td>
+                            <form action="{{ route('siswa.requestDelete', $siswa->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin request hapus?')">Request Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('changeRequests.editRequest', ['model' => 'siswa', 'id' => $siswa->id]) }}" class="btn btn-warning btn-sm">
+                                Request Edit
+                            </a>
                         </td>
                     @endif
                 </tr>

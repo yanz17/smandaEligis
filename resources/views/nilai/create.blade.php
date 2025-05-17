@@ -21,13 +21,13 @@
     @for ($i = 1; $i <= 5; $i++)
         <div>
             <label class="block mb-1">Semester {{ $i }}</label>
-            <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-full">
+            <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-full text-black">
         </div>
     @endfor
 
     <div>
         <label class="block mb-1">Juara</label>
-        <select id="juara" class="select select-bordered w-full">
+        <select id="juara" class="select select-bordered w-full text-black">
             <option value="">Pilih Juara</option>
             <option value="1">Juara 1</option>
             <option value="2">Juara 2</option>
@@ -37,7 +37,7 @@
     
     <div>
         <label class="block mb-1">Tingkat</label>
-        <select id="tingkat" class="select select-bordered w-full">
+        <select id="tingkat" class="select select-bordered w-full text-black">
             <option value="">Pilih Tingkat</option>
             <option value="kecamatan">Kecamatan</option>
             <option value="kabupaten">Kabupaten</option>
@@ -49,7 +49,7 @@
     
     <div>
         <label class="block mb-1">Nilai Prestasi</label>
-        <input type="number" step="0.1" name="prestasi" id="prestasi" class="input input-bordered w-full" readonly>
+        <input type="number" step="0.1" name="prestasi" id="prestasi" class="input input-bordered w-full text-black" readonly>
     </div>
 
     <button type="submit" class="btn btn-primary">Simpan</button>

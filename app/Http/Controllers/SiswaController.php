@@ -118,4 +118,44 @@ public function index(Request $request)
         Excel::import(new SiswaImport, $request->file('file'));
         return back()->with('success', 'Import berhasil');
     }
+
+        public function requestEdit(Request $request, Siswa $siswa)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'wakel') abort(403);
+
+        $request->validate([
+            'id' => 'required',
+            'nama' => 'required',
+            'kelas_id' => 'required',
+            'tanggal_lahir' => 'required',
+        ]);
+
+        \App\Models\ChangeRequest::create([
+            'user_id' => $user->id,
+            'model_type' => 'Siswa',
+            'model_id' => $siswa->id,
+            'action' => 'edit',
+            'data' => $request->only(['nama', 'tanggal_lahir', 'id', 'kelas_id']),
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Permintaan edit nilai telah dikirim, tunggu persetujuan Guru BK.');
+    }
+
+    public function requestDelete(Siswa $siswa)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'wakel') abort(403);
+
+        \App\Models\ChangeRequest::create([
+            'user_id' => $user->id,
+            'model_type' => 'Siswa',
+            'model_id' => $siswa->id,
+            'action' => 'delete',
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Permintaan hapus nilai telah dikirim, tunggu persetujuan Guru BK.');
+    }
 }
