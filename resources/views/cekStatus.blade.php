@@ -14,16 +14,16 @@
 <body class="hero h-screen" style="background-image: url(/img/hero-bg.JPG)">
     <div class="hero-overlay"></div>
     <div class="hero-content flex flex-col justify-center items-center bg-black/75 rounded-4xl md:w-2xl">
-        <h1 class="text-white font-bold text-2xl md:text-4xl mt-4 mb-4">Status Eligible SNBP 2025</h1>
+        <h1 class="text-yellow-500 font-bold text-2xl md:text-3xl mt-4 mb-4">Status Eligible SNBP 2025</h1>
 
         <form action="{{ route('cekstatus.cek') }}" method="post">
             @csrf
-            <section class="flex flex-col gap-1">
+            <section class="flex flex-col gap-1 mb-4">
                 <label class="text-sm md:text-lg font-medium text-white">Nomor Induk Siswa</label>
                 <input
                     type="text"
                     name="id"
-                    class="input input-sm md:input-lg w-3xs md:w-lg"
+                    class="input input-sm md:input-lg w-3xs md:w-lg bg-transparent text-white border-white rounded-lg"
                     required
                     placeholder="Masukkan NIS (10 digit)"
                     value="{{ old('id') }}"
@@ -32,12 +32,12 @@
                     <p class="text-red-400">{{ $message }}</p>
                 @enderror
             </section>
-            <section class="flex flex-col gap-1">
+            <section class="flex flex-col gap-1 mb-4">
                 <label class="text-sm md:text-lg font-medium text-white">Tanggal Lahir</label>
                 <input
                     type="date"
                     name="tanggal_lahir"
-                    class="input input-sm md:input-lg w-3xs md:w-lg"
+                    class="input input-sm md:input-lg w-3xs md:w-lg bg-transparent text-white border-white rounded-lg"
                     required
                     placeholder="Masukkan Tanggal Lahir"
                     value="{{ old('tanggal_lahir') }}"

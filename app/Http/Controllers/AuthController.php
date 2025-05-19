@@ -34,7 +34,7 @@ class AuthController extends Controller
             };
         }
 
-        return back()->withErrors(['login' => 'Username atau password salah.']);
+        return back()->with('error', 'Username atau password salah.');
     }
 
     public function logout(Request $request)

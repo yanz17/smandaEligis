@@ -14,12 +14,12 @@
         name="search_{{ $tab }}"
         placeholder="Cari {{ $tab }}..."
         value="{{ $searchName }}"
-        class="input input-bordered"
+        class="input input-bordered bg-transparent"
     >
 
     {{-- Filter berdasarkan kelas --}}
     @if(!auth()->user()->isWaliKelas())
-        <select name="kelas_id" class="select select-bordered">
+        <select name="kelas_id" class="select select-ghost">
             <option value="">Semua Kelas</option>
             @foreach($kelas as $k)
                 <option value="{{ $k->id }}" {{ $selectedKelas == $k->id ? 'selected' : '' }}>

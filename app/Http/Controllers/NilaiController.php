@@ -12,36 +12,36 @@ use Illuminate\Support\Facades\Auth;
 
 class NilaiController extends Controller
 {
-public function index(Request $request)
-{
-    $kelas = Kelas::all();
-    $sortOrder = $request->get('sort', 'asc');
+    public function index(Request $request)
+    {
+        $kelas = Kelas::all();
+        $sortOrder = $request->get('sort', 'asc');
 
-    $query = Nilai::select('nilais.*', 'siswas.nama as siswa_nama', 'kelas.nama_kelas as kelas_namakelas')
-        ->join('siswas', 'siswas.id', '=', 'nilais.siswa_id')
-        ->join('kelas', 'kelas.id', '=', 'siswas.kelas_id')
-        ->where(function ($q) use ($request) {
-            if ($request->search) {
-                $q->where('siswas.nama', 'like', '%' . $request->search . '%');
-            }
-            if ($request->kelas_id) {
-                $q->where('siswas.kelas_id', $request->kelas_id);
-            }
-        })
-        ->orderBy('siswas.nama', $sortOrder);
+        $query = Nilai::select('nilais.*', 'siswas.nama as siswa_nama', 'kelas.nama_kelas as kelas_namakelas')
+            ->join('siswas', 'siswas.id', '=', 'nilais.siswa_id')
+            ->join('kelas', 'kelas.id', '=', 'siswas.kelas_id')
+            ->where(function ($q) use ($request) {
+                if ($request->search) {
+                    $q->where('siswas.nama', 'like', '%' . $request->search . '%');
+                }
+                if ($request->kelas_id) {
+                    $q->where('siswas.kelas_id', $request->kelas_id);
+                }
+            })
+            ->orderBy('siswas.nama', $sortOrder);
 
-    $nilais = $query->paginate(10);
-    $totalNilai = $nilais->total();
+        $nilais = $query->paginate(10);
+        $totalNilai = $nilais->total();
 
-    $user = Auth::user();
-    if ($user->role === 'gurubk') {
-        return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
-    } elseif ($user->role === 'wakel') {
-        return view('dashboard.wakel', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
+        $user = Auth::user();
+        if ($user->role === 'gurubk') {
+            return view('dashboard.index', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
+        } elseif ($user->role === 'wakel') {
+            return view('dashboard.wakel', ['tab' => 'nilai'], compact('nilais', 'kelas', 'totalNilai', 'sortOrder'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
-
-    abort(403, 'Unauthorized action.');
-}
 
 
     public function create()
@@ -63,19 +63,28 @@ public function index(Request $request)
         ]);
 
         if (Nilai::where('siswa_id', $request->siswa_id)->exists()) {
-            return redirect()->back()->with('error', 'Siswa ini sudah memiliki nilai.');
+            return redirect()->back()->withInput()->with('error', 'Siswa ini sudah memiliki nilai.');
         }
 
-        Nilai::create($request->all());
+        $data = $request->only(['siswa_id', 'sem_1', 'sem_2', 'sem_3', 'sem_4', 'sem_5', 'prestasi']);
+
+        // Ganti null dengan 0 (atau angka default lain jika perlu)
+        foreach (['sem_1', 'sem_2', 'sem_3', 'sem_4', 'sem_5', 'prestasi'] as $field) {
+            $data[$field] = round($data[$field] ?? 0, 2);
+        }
+
+        Nilai::create($data);
 
         $user = Auth::user();
-        if($user->role === 'gurubk'){
+        if ($user->role === 'gurubk') {
             return redirect()->route('dashboard.index', ['tab' => 'nilai'])->with('success', 'Nilai berhasil ditambahkan!');
-        }elseif($user->role === 'wakel'){
+        } elseif ($user->role === 'wakel') {
             return redirect()->route('dashboard.wakel', ['tab' => 'nilai'])->with('success', 'Nilai berhasil ditambahkan!');
         }
+
         abort(403, 'Unauthorized action.');
     }
+
 
     public function edit(Nilai $nilai)
     {
@@ -94,6 +103,10 @@ public function index(Request $request)
             'sem_5' => 'nullable|numeric',
             'prestasi' => 'nullable|numeric',
         ]);
+
+        foreach (['sem_1', 'sem_2', 'sem_3', 'sem_4', 'sem_5', 'prestasi'] as $field) {
+            $data[$field] = round($data[$field] ?? 0, 2);
+        }
 
         $nilai->update($request->all());
 

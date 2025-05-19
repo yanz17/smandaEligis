@@ -13,11 +13,11 @@
         name="search_siswa"
         placeholder="Cari siswa..."
         value="{{ $search }}"
-        class="input input-bordered"
+        class="input input-bordered bg-transparent"
     />
 
     @if ($showLangkah)
-        <select name="langkah" class="select select-bordered">
+        <select name="langkah" class="select select-ghost select-bordered">
             <option value="">Pilih langkah</option>
             <option value="matrix" {{ $langkah == 'matrix' ? 'selected' : '' }}>Matrix Awal</option>
             <option value="normalized" {{ $langkah == 'normalized' ? 'selected' : '' }}>Normalisasi</option>

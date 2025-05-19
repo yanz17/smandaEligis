@@ -1,14 +1,14 @@
 @props(['requests'])
 
 <div class="container">
-    <h1>Permintaan Perubahan Data</h1>
+    <h1 class="text-xl font-bold mb-4">Permintaan Perubahan Data</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     @if($requests->count())
-    <table class="table table-bordered">
+    <table class="table table-bordered w-full">
         <thead>
             <tr>
                 <th>ID</th>
@@ -22,14 +22,20 @@
         </thead>
         <tbody>
             @foreach($requests as $req)
-                <tr>
+                <tr x-data="{ showDetail: false }">
                     <td>{{ $req->id }}</td>
                     <td>{{ $req->requester->name }}</td>
                     <td>{{ $req->model_type }} #{{ $req->model_id }}</td>
                     <td>{{ ucfirst($req->action) }}</td>
                     <td>
                         @if($req->action === 'edit')
-                            <pre>{{ json_encode($req->data, JSON_PRETTY_PRINT) }}</pre>
+                            <button class="btn btn-sm btn-info" @click="showDetail = !showDetail">
+                                Detail
+                            </button>
+
+                            <div x-show="showDetail" class="mt-2 p-4 border rounded bg-gray-100 text-sm text-left whitespace-pre-wrap">
+                                {{ json_encode($req->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
+                            </div>
                         @else
                             -
                         @endif
@@ -54,8 +60,10 @@
         </tbody>
     </table>
 
-    {{ $requests->links() }}
+    <div class="mt-4">
+        {{ $requests->links() }}
+    </div>
     @else
-        <p>Tidak ada permintaan perubahan.</p>
+        <p class="text-gray-600">Tidak ada permintaan perubahan.</p>
     @endif
 </div>

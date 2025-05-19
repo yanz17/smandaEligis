@@ -1,11 +1,11 @@
 @props(['users'])
 
 <div>
-    <a href="{{ route('user.create') }}" class="btn btn-primary mb-4">Tambah User</a>
+    <a href="{{ route('user.create') }}" class="btn btn-success mb-4">Tambah User</a>
 
-    <table class="table w-full">
+    <table class="table w-full" x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
         <thead>
-            <tr>
+            <tr x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
                 <th>No</th>
                 <th>Username</th>
                 <th>Password</th>

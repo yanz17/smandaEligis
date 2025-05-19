@@ -20,8 +20,9 @@
             <h2 class="text-3xl font-bold mb-6 text-center text-yellow-500">Login</h2>
             
             @if (session('error'))
-                <div class="mb-4 text-sm text-red-600">
-                    {{ session('error') }}
+                <div class="alert alert-error shadow-lg mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728" /></svg>
+                    <span>{{ session('error') }}</span>
                 </div>
             @endif
     

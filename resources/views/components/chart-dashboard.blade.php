@@ -3,22 +3,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <div class="flex flex-col w-full text-center font-bold text-2xl">
-        {{-- Jumlah Siswa per Jurusan --}}
-        <h1>Jumlah Siswa per Jurusan</h1>
-        <div class="h-100 flex justify-center mb-10 mt-5">
-            <canvas id="siswaPerJurusanChart"></canvas>
-        </div>
-        
         {{-- Jumlah Eligible --}}
         <h1>Jumlah Siswa Eligible</h1>
         <div class="h-100 flex justify-center mb-10 mt-5">
             <canvas id="eligibleChart"></canvas>
-        </div>
-        
-        {{-- Jumlah Siswa per Kelas --}}
-        <h1>Jumlah Siswa per Kelas</h1>
-        <div class="h-100 flex justify-center mb-10 mt-5">
-            <canvas id="siswaPerKelasChart"></canvas>
         </div>
 
         {{-- Jumlah Eligible per Kelas --}}
@@ -121,14 +109,18 @@
 
         // Chart: Eligible per Kelas
         fetchChartData('/charts/eligible-per-kelas').then(data => {
+            const labels = data.map(item => item.kelas);
+            const values = data.map(item => item.jumlah);
+            const colors = data.map(item => item.color);
+
             new Chart(document.getElementById('eligiblePerKelasChart'), {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(data),
+                    labels: labels,
                     datasets: [{
                         label: 'Jumlah Siswa Eligible per Kelas',
-                        data: Object.values(data),
-                        backgroundColor: '#818cf8'
+                        data: values,
+                        backgroundColor: colors
                     }]
                 },
                 options: {
@@ -148,6 +140,7 @@
                 }
             });
         });
+
 
         // Chart: Rata-rata Tiap Kriteria
         fetchChartData('/charts/rata-rata-kriteria').then(data => {

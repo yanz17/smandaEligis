@@ -61,28 +61,43 @@ public function index(Request $request)
 
     public function create()
     {
-        $kelas = Kelas::all();
+        $user = Auth::user();
+
+        if ($user->role === 'wakel') {
+            $kelas = Kelas::where('user_id', $user->id)->get(); // ambil hanya kelas si wakel
+        } else {
+            $kelas = Kelas::all();
+        }
+
         return view('siswa.create', compact('kelas'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id' => 'required|string|max:10',
+            'id' => 'required|string|min:10|unique:siswas,id',
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
-        Siswa::create($request->all());
-
         $user = Auth::user();
-        if($user->role === 'gurubk'){
-            return redirect()->route('dashboard.index', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
-        }elseif($user->role === 'wakel'){
-            return redirect()->route('dashboard.wakel', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+
+        // Validasi tambahan: wakel hanya boleh input siswa ke kelas miliknya
+        if ($user->role === 'wakel') {
+            $kelasWakel = Kelas::where('user_id', $user->id)->pluck('id')->toArray();
+            if (!in_array($request->kelas_id, $kelasWakel)) {
+                return redirect()->back()->with('error', 'Anda tidak diizinkan menambahkan siswa ke kelas ini.');
+            }
         }
 
+        Siswa::create($request->all());
+
+        if ($user->role === 'gurubk') {
+            return redirect()->route('dashboard.index', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+        } elseif ($user->role === 'wakel') {
+            return redirect()->route('dashboard.wakel', ['tab' => 'siswa'])->with('success', 'Siswa berhasil ditambahkan!');
+        }
     }
 
     public function edit(Siswa $siswa)

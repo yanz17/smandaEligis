@@ -3,11 +3,11 @@
 @props(['nilais', 'sort' => 'asc'])
 
 <div>
-    <a href="{{ route('nilai.create') }}" class="btn btn-primary mb-4">Tambah Nilai</a>
+    <a href="{{ route('nilai.create') }}" class="btn btn-success mb-4">Tambah Nilai</a>
 
-    <table class="table w-full">
+    <table class="table w-full" x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
         <thead>
-            <tr>
+            <tr x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
                 <th>No</th>
                 <th>
                 @if(auth()->user()->isGuruBK())
@@ -46,11 +46,11 @@
                 <tr>
                     <td>{{ ($nilais->currentPage() - 1) * $nilais->perPage() + $index + 1 }}</td>
                     <td>{{ $nilai->siswa->nama }}</td>
-                    <td>{{ $nilai->sem_1 }}</td>
-                    <td>{{ $nilai->sem_2 }}</td>
-                    <td>{{ $nilai->sem_3 }}</td>
-                    <td>{{ $nilai->sem_4 }}</td>
-                    <td>{{ $nilai->sem_5 }}</td>
+                    <td>{{ number_format($nilai->sem_1, 2) }}</td>
+                    <td>{{ number_format($nilai->sem_2, 2) }}</td>
+                    <td>{{ number_format($nilai->sem_3, 2) }}</td>
+                    <td>{{ number_format($nilai->sem_4, 2) }}</td>
+                    <td>{{ number_format($nilai->sem_5, 2) }}</td>
                     <td>{{ $nilai->prestasi }}</td>
                     @if(auth()->user()->isGuruBK())
                         <td><a href="{{ route('nilai.edit', $nilai->id) }}" class="btn btn-sm btn-info">Edit</a></td>

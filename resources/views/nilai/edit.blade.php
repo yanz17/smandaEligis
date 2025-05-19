@@ -3,7 +3,7 @@
 @section('title', 'Edit Nilai')
 
 @section('content')
-<h2 class="text-xl font-semibold mb-4">Edit Nilai</h2>
+<h2 class="text-3xl text-yellow-500 text-center font-bold mb-4">Edit Nilai</h2>
 
 <form action="{{ route('nilai.update', $nilai->id) }}" method="POST" class="space-y-4">
     @csrf
@@ -11,7 +11,7 @@
 
     <div>
         <label class="block mb-1">Siswa</label>
-        <select id="siswa-select" name="siswa_id" class="select select-bordered w-full" required>
+        <select id="siswa-select" name="siswa_id" class="select select-bordered w-full text-black" required>
             <option value="">Pilih Siswa</option>
             @foreach($siswas as $s)
                 <option value="{{ $s->id }}" {{ $nilai->siswa_id == $s->id ? 'selected' : '' }}>
@@ -21,46 +21,53 @@
         </select>
     </div>
 
-    @for ($i = 1; $i <= 5; $i++)
+    <div class="flex flex-row gap-3">
+        @for ($i = 1; $i <= 5; $i++)
+            <div>
+                <label class="block mb-1">Semester {{ $i }}</label>
+                <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-4xs text-black"
+                    value="{{ old("sem_$i", number_format($nilai["sem_$i"], 2, '.', '')) }}">
+            </div>
+        @endfor
+    </div>
+    
+    <div class="flex flex-row gap-3">
         <div>
-            <label class="block mb-1">Semester {{ $i }}</label>
-            <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-full"
-                value="{{ old("sem_$i", $nilai["sem_$i"]) }}">
+            <label class="block mb-1">Juara</label>
+            <select id="juara" class="select select-bordered w-4xs text-black">
+                <option value="">Pilih Juara</option>
+                @for ($j = 1; $j <= 3; $j++)
+                    <option value="{{ $j }}" {{ $nilai->juara == $j ? 'selected' : '' }}>Juara {{ $j }}</option>
+                @endfor
+            </select>
         </div>
-    @endfor
-
-    <div>
-        <label class="block mb-1">Juara</label>
-        <select id="juara" class="select select-bordered w-full">
-            <option value="">Pilih Juara</option>
-            @for ($j = 1; $j <= 3; $j++)
-                <option value="{{ $j }}" {{ $nilai->juara == $j ? 'selected' : '' }}>Juara {{ $j }}</option>
-            @endfor
-        </select>
+    
+        <div>
+            <label class="block mb-1">Tingkat Prestasi</label>
+            <select id="tingkat" class="select select-bordered w-4xs text-black">
+                @php
+                    $tingkatan = ['kecamatan', 'kabupaten', 'provinsi', 'nasional', 'internasional'];
+                @endphp
+                <option value="">Pilih Tingkat</option>
+                @foreach($tingkatan as $t)
+                    <option value="{{ $t }}" {{ $nilai->tingkat === $t ? 'selected' : '' }}>
+                        {{ ucfirst($t) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    
+        <div>
+            <label class="block mb-1">Nilai Prestasi</label>
+            <input type="text" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-black" 
+                value="{{ old('prestasi', $nilai->prestasi) }}" readonly>
+        </div>
     </div>
 
-    <div>
-        <label class="block mb-1">Tingkat Prestasi</label>
-        <select id="tingkat" class="select select-bordered w-full">
-            @php
-                $tingkatan = ['kecamatan', 'kabupaten', 'provinsi', 'nasional', 'internasional'];
-            @endphp
-            <option value="">Pilih Tingkat</option>
-            @foreach($tingkatan as $t)
-                <option value="{{ $t }}" {{ $nilai->tingkat === $t ? 'selected' : '' }}>
-                    {{ ucfirst($t) }}
-                </option>
-            @endforeach
-        </select>
+    <div class="flex flex-col items-center gap-3 mt-8">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/dashboard/gurubk?tab=nilai" class="link link-hover link-error">Kembali</a>
     </div>
-
-    <div>
-        <label class="block mb-1">Nilai Prestasi</label>
-        <input type="text" name="prestasi" id="prestasi" class="input input-bordered w-full" 
-            value="{{ old('prestasi', $nilai->prestasi) }}" readonly>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update</button>
 </form>
 
 <script>
@@ -94,7 +101,7 @@
                 internasional: { 3: 7, 2: 7.5, 1: 8 },
             };
 
-            const nilai = nilaiMap[tingkat]?.[juara] ?? '';
+            const nilai = nilaiMap[tingkat]?.[juara] ?? {{ old('prestasi') }};
             prestasiInput.value = nilai;
         }
 

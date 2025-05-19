@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 </head>
-<body class="h-screen bg-slate-800">
+<body class="min-h-screen bg-slate-800 flex items-center justify-center">
     <div class="card w-lg mx-auto bg-black text-white">
         <div class="px-8 py-5">
             @yield('content')

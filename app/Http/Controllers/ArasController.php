@@ -193,6 +193,4 @@ class ArasController extends Controller
             'peringkat' => $this->paginate(collect($peringkat), $perPage, $currentPage),
         ];
     }
-
-
 }

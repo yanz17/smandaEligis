@@ -1,10 +1,10 @@
 @props(['siswas', 'sort'])
 
 <div>
-    <a href="{{ route('siswa.create') }}" class="btn btn-primary mb-4">Tambah Siswa</a>
+    <a href="{{ route('siswa.create') }}" class="btn btn-success mb-4">Tambah Siswa</a>
 
-    <table class="table w-full">
-        <thead>
+    <table class="table w-full" x-bind:class="isDarkMode ? 'text-gray-300 border-gray-300' : 'text-black'" >
+        <thead x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
             <tr>
                 <th>No</th>
                 <th>NIS</th>

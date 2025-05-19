@@ -48,10 +48,20 @@ class ChartController extends Controller
 
     public function eligiblePerKelasGabungan()
     {
-        $mipa = EligibleMIPA::with('siswa.kelas')->get();
-        $ips = EligibleIPS::with('siswa.kelas')->get();
+        $mipa = EligibleMipa::with('siswa.kelas')->get();
+        $ips = EligibleIps::with('siswa.kelas')->get();
 
         $gabungan = $mipa->merge($ips);
+
+        $kelasData = [];
+        foreach ($gabungan as $item) {
+            $kelas = $item->siswa->kelas;
+            if ($kelas) {
+                $kelasData[$kelas->nama_kelas] = [
+                    'jurusan' => $kelas->jurusan ?? 'Tidak diketahui',
+                ];
+            }
+        }
 
         $data = $gabungan->groupBy(function ($item) {
             return $item->siswa->kelas->nama_kelas ?? 'Tidak diketahui';
@@ -59,8 +69,42 @@ class ChartController extends Controller
             return $group->count();
         });
 
-        return response()->json($data);
+        $sorted = collect($data)->sortKeysUsing(function ($a, $b) use ($kelasData) {
+            $jurusanA = $kelasData[$a]['jurusan'] ?? 'Z';
+            $jurusanB = $kelasData[$b]['jurusan'] ?? 'Z';
+
+            preg_match('/\d+/', $a, $matchA);
+            preg_match('/\d+/', $b, $matchB);
+
+            $angkaA = isset($matchA[0]) ? (int) $matchA[0] : 999;
+            $angkaB = isset($matchB[0]) ? (int) $matchB[0] : 999;
+
+            $prefixA = $jurusanA === 'MIPA' ? 0 : ($jurusanA === 'IPS' ? 1 : 2);
+            $prefixB = $jurusanB === 'MIPA' ? 0 : ($jurusanB === 'IPS' ? 1 : 2);
+
+            return ($prefixA * 1000 + $angkaA) <=> ($prefixB * 1000 + $angkaB);
+        });
+
+        // Tambahkan warna berdasarkan jurusan
+        $result = [];
+        foreach ($sorted as $kelas => $jumlah) {
+            $jurusan = $kelasData[$kelas]['jurusan'] ?? 'Tidak diketahui';
+            $color = match ($jurusan) {
+                'MIPA' => '#60a5fa', // biru
+                'IPS' => '#f87171', // merah
+                default => '#a3a3a3' // abu
+            };
+
+            $result[] = [
+                'kelas' => $kelas,
+                'jumlah' => $jumlah,
+                'color' => $color,
+            ];
+        }
+
+        return response()->json($result);
     }
+
 
     public function rataRataKriteria()
     {
