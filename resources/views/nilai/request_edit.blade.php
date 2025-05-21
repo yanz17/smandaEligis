@@ -66,7 +66,7 @@
 
     <div class="flex flex-col items-center gap-3 mt-8">
         <button type="submit" class="btn btn-warning">Ajukan Perubahan</button>
-        <a href="/dashboard/wakel?tab=siswa" class="link link-hover link-error">Kembali</a>
+        <a href="/dashboard/wakel?tab=nilai" class="link link-hover link-error">Kembali</a>
     </div>
 </form>
 

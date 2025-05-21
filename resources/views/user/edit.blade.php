@@ -34,7 +34,7 @@
 
     <div class="flex flex-col items-center gap-3 mt-8">
         <button type="submit" class="btn btn-primary">Update</button>
-        <a href="/dashboard/user?tab=user" class="link link-hover link-error">Kembali</a>
+        <a href="/dashboard/gurubk?tab=user" class="link link-hover link-error">Kembali</a>
     </div>
 </form>
 @endsection
