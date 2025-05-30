@@ -27,7 +27,7 @@ class WaliKelasController extends Controller
         }
 
         // Search tergantung tab
-        $search = $request->get('search_' . $tab);
+        $search = $request->input('search_siswa'); // atau sesuaikan dengan name input di form
 
         // Inisialisasi default null
         $siswas = null;

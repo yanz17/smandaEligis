@@ -120,11 +120,18 @@ class ArasController extends Controller
         );
     }
 
-    public function getPerhitunganLengkapPerJurusan(string $jurusan)
+    public function getPerhitunganLengkapPerJurusan(string $jurusan, string $search = null)
     {
-        $data = Nilai::whereHas('siswa.kelas', fn($q) => $q->where('jurusan', $jurusan))
+        $query = Nilai::whereHas('siswa.kelas', fn($q) => $q->where('jurusan', $jurusan))
             ->orderBy('siswa_id') 
-            ->with('siswa.kelas')->get();
+            ->with('siswa.kelas');
+
+        // Tambahkan filter search jika ada
+        if ($search) {
+            $query->whereHas('siswa', fn($q) => $q->where('nama', 'like', "%$search%"));
+        }
+
+        $data = $query->get();
 
         if ($data->isEmpty()) return [];
 

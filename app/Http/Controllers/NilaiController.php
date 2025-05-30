@@ -105,7 +105,7 @@ class NilaiController extends Controller
         ]);
 
         foreach (['sem_1', 'sem_2', 'sem_3', 'sem_4', 'sem_5', 'prestasi'] as $field) {
-            $data[$field] = round($data[$field] ?? 0, 2);
+            $data[$field] = round($data[$field] ?? 0, 4);
         }
 
         $nilai->update($request->all());

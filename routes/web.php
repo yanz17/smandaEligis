@@ -36,6 +36,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/cek-status', [CekStatusController::class, 'form'])->name('cekstatus.form');
 Route::post('/cek-status', [CekStatusController::class, 'cek'])->name('cekstatus.cek');
 
+Route::get('/export/eligible/mipa/excel', [EligibleController::class, 'exportMipaExcel'])->name('eligible.mipa.excel');
+Route::get('/export/eligible/mipa/pdf', [EligibleController::class, 'exportMipaPdf'])->name('eligible.mipa.pdf');
+Route::get('/export/eligible/ips/excel', [EligibleController::class, 'exportIpsExcel'])->name('eligible.ips.excel');
+Route::get('/export/eligible/ips/pdf', [EligibleController::class, 'exportIpsPdf'])->name('eligible.ips.pdf');
+
 // Dashboard Routes
 Route::middleware(['auth'])->group(function () {
 
@@ -81,10 +86,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
 
         //Export Siswa & Nilai
-        Route::get('/export/eligible/mipa/excel', [EligibleController::class, 'exportMipaExcel'])->name('eligible.mipa.excel');
-        Route::get('/export/eligible/mipa/pdf', [EligibleController::class, 'exportMipaPdf'])->name('eligible.mipa.pdf');
-        Route::get('/export/eligible/ips/excel', [EligibleController::class, 'exportIpsExcel'])->name('eligible.ips.excel');
-        Route::get('/export/eligible/ips/pdf', [EligibleController::class, 'exportIpsPdf'])->name('eligible.ips.pdf');
 
         //Approve Change Request
         Route::get('/change-requests', [ChangeRequestController::class, 'index'])->name('changeRequests.index');

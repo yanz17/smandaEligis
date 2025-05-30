@@ -17,22 +17,8 @@ class SiswaSeeder extends Seeder
         $kelas = Kelas::first();
 
         Siswa::insert([
-            [   
-                'id' => 1234567890,
-                'nama' => 'Aldi Ramadhan',
-                'kelas_id' => $kelas->id,
-                'tanggal_lahir' => '2007/12/01',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id'=> 9876543211,
-                'nama' => 'Dina Puspita',
-                'kelas_id' => $kelas->id,
-                'tanggal_lahir' => '2007/01/12',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+               
+
         ]);
     }
 }
