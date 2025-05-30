@@ -3,7 +3,7 @@
         <div class="avatar">
             <div class="w-8 rounded">
               <img
-                src="../img/logo-smanda.png"
+                src="/img/logo-smanda.png"
                 alt="logo smanda" />
             </div>
         </div>

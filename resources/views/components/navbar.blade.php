@@ -7,7 +7,7 @@
           <div class="avatar pl-3">
             <div class="w-8 rounded">
               <img
-                src="../img/logo-smanda.png"
+                src="/img/logo-smanda.png"
                 alt="Tailwind-CSS-Avatar-component" />
             </div>
           </div>
