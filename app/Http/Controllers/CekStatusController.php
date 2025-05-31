@@ -11,7 +11,7 @@ class CekStatusController extends Controller
 {
     public function form()
     {
-        return view('cekstatus');
+        return view('cekStatus');
     }
 
     public function cek(Request $request)
