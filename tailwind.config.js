@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './resources/**/*.blade.php',
@@ -8,7 +9,7 @@ module.exports = {
     extend: {},
   },
   plugins: [require('daisyui')],
-    daisyui: {
-    themes: false, 
+  daisyui: {
+    themes: ['light'], // ubah ke 'light' agar teks tidak putih, atau bisa pakai 'corporate', 'lofi', dll
   },
 };
