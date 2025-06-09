@@ -123,9 +123,33 @@ class NilaiController extends Controller
     public function import(Request $request)
     {
         $request->validate(['file' => 'required|file|mimes:xls,xlsx']);
-        Excel::import(new NilaiImport, $request->file('file'));
+
+        $user = Auth::user();
+        $kelasId = null;
+
+        if ($user->role === 'wakel') {
+            $kelasId = $user->kelas->id ?? null;
+
+            if (!$kelasId) {
+                return redirect()->back()->with('error', 'Anda tidak terdaftar sebagai wali kelas.');
+            }
+        }
+
+        $import = new NilaiImport($kelasId);
+
+        try {
+            Excel::import($import, $request->file('file'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Format file tidak sesuai atau rusak.')->withInput();
+        }
+
+        if (!empty(NilaiImport::$errors)) {
+            return redirect()->back()->with('import_errors', NilaiImport::$errors);
+        }
+
         return redirect()->back()->with('success', 'Import nilai berhasil!');
     }
+
 
     public function requestEdit(Request $request, Nilai $nilai)
     {

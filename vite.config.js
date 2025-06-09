@@ -1,3 +1,4 @@
+// vite.config.js (versi tradisional)
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
@@ -8,11 +9,4 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks: undefined,
-            },
-        },
-    },
 });

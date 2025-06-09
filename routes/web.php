@@ -82,8 +82,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dashboard/eligible/simpan', [ArasController::class, 'simpanEligible'])->name('eligible.simpan');
 
         //Import Excel Siswa & Nilai
-        Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
-        Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
+
 
         //Export Siswa & Nilai
 
@@ -116,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/create', [SiswaController::class, 'create'])->name('siswa.create');
         Route::post('/', [SiswaController::class, 'store'])->name('siswa.store');
+
+        Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
+        Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
     });
     
     //Guru BK x Kepala Sekolah

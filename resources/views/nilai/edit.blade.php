@@ -60,7 +60,7 @@
         <div>
             <label class="block mb-1">Nilai Prestasi</label>
             <input type="text" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-black" 
-                value="{{ old('prestasi', $nilai->prestasi) }}" readonly>
+                value="{{ old('prestasi', $nilai->prestasi) }}" placeholder="{{ $nilai->prestasi }}" readonly>
         </div>
     </div>
 
@@ -101,7 +101,7 @@
                 internasional: { 3: 7, 2: 7.5, 1: 8 },
             };
 
-            const nilai = nilaiMap[tingkat]?.[juara] ?? {{ old('prestasi') }};
+            const nilai = nilaiMap[tingkat]?.[juara] ?? '';
             prestasiInput.value = nilai;
         }
 

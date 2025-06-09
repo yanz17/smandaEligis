@@ -17,6 +17,22 @@
             <span>{{ session('success') }}</span>
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-error mb-4" 
+        x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('import_errors'))
+        <div class="alert alert-error mb-4"
+        x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+            <ul>
+                @foreach (session('import_errors') as $msg)
+                    <li>{{ $msg }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     @php $tab = request('tab', 'dashboard'); @endphp
     @if ($tab === 'dashboard')

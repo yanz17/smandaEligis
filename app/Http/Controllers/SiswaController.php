@@ -129,9 +129,16 @@ public function index(Request $request)
 
     public function import(Request $request)
     {
-        $request->validate(['file' => 'required|file|mimes:xlsx,csv']);
-        Excel::import(new SiswaImport, $request->file('file'));
-        return back()->with('success', 'Import berhasil');
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv'
+        ]);
+
+        try {
+            Excel::import(new \App\Imports\SiswaImport(Auth::user()), $request->file('file'));
+            return back()->with('success', 'Import berhasil!');
+        } catch (\Exception $e) {
+            return back()->with('error', nl2br($e->getMessage())); // agar line-break muncul
+        }
     }
 
         public function requestEdit(Request $request, Siswa $siswa)
