@@ -56,18 +56,18 @@
                     </div>
                 </div>
                 <h1 class="text-xl font-bold text-center" x-bind:class="isDarkMode ? 'text-yellow-400' : 'text-indigo-600'">SMANDA ELIGIS</h1>
-                <p class="text-xs text-center mt-1 opacity-70">Sistem Informasi SMAN 2</p>
+                <p class="text-xs text-center mt-1 opacity-70" x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">Sistem Informasi SMAN 2 Kuningan</p>
             </div>
             
             <!-- Navigation -->
-            <div class="flex-1 overflow-y-auto py-4 px-3">
+            <div class="flex-1 overflow-y-auto py-4 px-3" x-bind:class="isDarkMode ? 'text-gray-300' : 'text-black'">
                 <ul class="space-y-2">
                     @yield('side')
                 </ul>
             </div>
             
             <!-- User profile section -->
-            <div class="p-4 border-t" x-bind:class="isDarkMode ? 'border-gray-700' : 'border-gray-200'">
+            <div class="p-4 border-t" x-bind:class="isDarkMode ? 'border-gray-700' : 'border-gray-200 text-black'">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div>
@@ -89,7 +89,7 @@
         <!-- Main content area -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top navigation -->
-            <header class="flex items-center justify-between p-4 border-b shadow-sm" x-bind:class="isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'">
+            <header class="flex items-center justify-between p-4 border-b shadow-sm" x-bind:class="isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'">
                 <div class="flex items-center">
                     <h1 class="text-xl font-bold">@yield('header')</h1>
                 </div>
@@ -103,9 +103,9 @@
             </header>
 
             <!-- Page content -->
-            <main class="flex-1 overflow-y-auto p-4 animate-fadeIn" x-bind:class="isDarkMode ? 'bg-gray-900' : 'bg-gray-50'">
+            <main class="flex-1 overflow-y-auto p-4 animate-fadeIn" x-bind:class="isDarkMode ? 'bg-gray-900' : 'bg-gray-50 text-black'">
                 <div class="container mx-auto">
-                    <div class="rounded-lg shadow-md p-6 animate-fadeIn" x-bind:class="isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-white'">
+                    <div class="rounded-lg shadow-md p-6 animate-fadeIn" x-bind:class="isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-white text-black'">
                         @yield('content')
                     </div>
                 </div>

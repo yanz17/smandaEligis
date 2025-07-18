@@ -33,7 +33,7 @@
     @csrf
     <div>
         <label class="block mb-1">NIS</label>
-        <input type="text" name="id" class="input input-bordered w-full text-black"
+        <input type="text" name="id" class="input input-bordered w-full text-white"
             minlength="10" maxlength="10" required
             oninput="this.value = this.value.replace(/[^0-9]/g, '')"
             placeholder="Masukkan NIS 10 digit">
@@ -44,7 +44,7 @@
         <label class="block mb-1">Nama</label>
         <input 
             type="text" name="nama" 
-            class="input input-bordered w-full text-black" 
+            class="input input-bordered w-full text-white" 
             value="{{ old('nama') }}" 
             placeholder="Masukkan nama lengkap"
             required>
@@ -53,7 +53,7 @@
 
     <div>
         <label class="block mb-1">Tanggal Lahir</label>
-        <input type="date" name="tanggal_lahir" class="input input-bordered w-full text-black" value="{{ old('tanggal_lahir') }}" required>
+        <input type="date" name="tanggal_lahir" class="input input-bordered w-full text-white" value="{{ old('tanggal_lahir') }}" required>
         @error('tanggal_lahir') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
@@ -61,9 +61,9 @@
         <label class="block mb-1">Kelas</label>
         @if($kelas->count() === 1)
             <input type="hidden" name="kelas_id" value="{{ $kelas->first()->id }}">
-            <input type="text" value="{{ $kelas->first()->nama_kelas }}" class="input input-bordered w-full text-black bg-gray-100" disabled>
+            <input type="text" value="{{ $kelas->first()->nama_kelas }}" class="input input-bordered w-full text-white bg-gray-100" disabled>
         @else
-            <select name="kelas_id" class="select select-bordered w-full text-black" required>
+            <select name="kelas_id" class="select select-bordered w-full text-white" required>
                 <option value="">Pilih Kelas</option>
                 @foreach($kelas as $k)
                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>

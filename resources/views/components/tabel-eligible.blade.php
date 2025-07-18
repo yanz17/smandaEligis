@@ -13,7 +13,7 @@
     <tbody>
         @forelse ($data as $item)
             <tr>
-                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                <td>{{ $item->id }}</td>
                 <td>{{ $item->siswa->id }}</td>
                 <td>{{ $item->siswa->nama }}</td>
                 <td>{{ $item->siswa->kelas->nama_kelas }}</td>

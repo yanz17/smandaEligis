@@ -11,19 +11,19 @@
 
     <div>
         <label class="block mb-1">Username</label>
-        <input type="text" name="username" class="input input-bordered w-full text-black" value="{{ old('username', $user->username) }}" required>
+        <input type="text" name="username" class="input input-bordered w-full text-white" value="{{ old('username', $user->username) }}" required>
         @error('username') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
     <div>
         <label class="block mb-1">Password</label>
-        <input type="text" name="password" class="input input-bordered w-full text-black" value="{{ old('password', $user->password) }}" required>
+        <input type="text" name="password" class="input input-bordered w-full text-white" value="{{ old('password', $user->password) }}" required>
         @error('password') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
     <div>
         <label class="block mb-1">Role</label>
-        <select name="role" class="select select-bordered w-full text-black" required>
+        <select name="role" class="select select-bordered w-full text-white" required>
             <option value="">Pilih Role</option>
             <option value="gurubk">Guru BK</option>
             <option value="wakel">Wali Kelas</option>

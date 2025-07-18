@@ -20,7 +20,7 @@
           <div class="hero-overlay"></div>
           <div class="hero-content text-neutral-content text-center">
             <div class="max-w-md">
-              <h1 class="mb-5 text-5xl font-bold">Simpati <span class="text-yellow-300">Prestasi</span></h1>
+              <h1 class="mb-5 text-5xl font-bold">Simpati <span class="text-yellow-500">Prestasi</span></h1>
               <p class="mb-5">
                 Selamat datang di portal informasi siswa eligible SNBP resmi SMAN 2 Kuningan
               </p>
@@ -34,13 +34,13 @@
       {{-- Tulisan perkenalan --}}
       <div class="lg:px-25">
         <section class="container mt-10 p-8 text-white">
-          <h1 class="text-3xl md:text-4xl font-bold text-center">Apa itu Smanda <span class="text-yellow-300">Eligis</span>?</h1>
+          <h1 class="text-3xl md:text-4xl font-bold text-center">Apa itu Smanda <span class="text-yellow-500">Eligis</span>?</h1>
           <p class="text-lg/8 text-justify md:text-left md:text-xl/8.5 font-semibold pt-4 md:indent-8">Diambil dari kata Eligible, Smanda Eligis adalah portal resmi SMA Negeri 2 Kuningan yang memuat informasi mengenai siswa yang eligible untuk mengikuti Seleksi Nasional Berbasis Prestasi (SNBP). Siswa dapat dengan mudah mengecek status eligible-nya secara individu. Selain itu, Smanda Eligis dibuat built-in dengan pengelolaan data siswa, sehingga proses pengiriman informasi dapat dilakukan dengan cepat.</p>
         </section>
       </div>
 
       {{-- Cards --}}
-      <section class="grid grid-flow-row grid-cols-1 lg:grid-cols-3 gap-2 items-center justify-center">
+      <section class="grid grid-flow-row grid-cols-1 lg:grid-cols-3 gap-2 items-center justify-center mx-5">
         <x-profile-card title="Cek Status">
           Cek status eligible secara individu dengan cepat dan mudah.
         </x-profile-card>
@@ -60,7 +60,7 @@
             <img src="../img/logo-smanda.png" />
           </div>
         </div>
-        <p class="font-bold">Smanda <span class="text-yellow-300">Eligis</span></p>
+        <p class="font-bold">Smanda <span class="text-yellow-500">Eligis</span></p>
         <p>Copyright &copy; 2025 SMAN 2 Kuningan</p>
       </aside>
       <nav>

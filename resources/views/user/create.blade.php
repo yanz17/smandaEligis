@@ -9,18 +9,18 @@
     @csrf
     <div>
         <label class="block mb-1">Username</label>
-        <input type="text" name="username" class="input input-bordered w-full text-black" placeholder="Masukkan username" value="{{ old('username') }}" required>
+        <input type="text" name="username" class="input input-bordered w-full text-white" placeholder="Masukkan username" value="{{ old('username') }}" required>
         @error('username') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
     <div>
         <label class="block mb-1">Password</label>
-        <input type="text" name="password" class="input input-bordered w-full text-black" placeholder="Masukkan password" value="{{ old('password') }}" required>
+        <input type="text" name="password" class="input input-bordered w-full text-white" placeholder="Masukkan password" value="{{ old('password') }}" required>
         @error('password') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
     </div>
 
     <div>
         <label class="block mb-1">Role</label>
-        <select name="role" class="select select-bordered w-full text-black" required>
+        <select name="role" class="select select-bordered w-full text-white" required>
             <option value="">Pilih Role</option>
             <option value="gurubk">Guru BK</option>
             <option value="wakel">Wali Kelas</option>

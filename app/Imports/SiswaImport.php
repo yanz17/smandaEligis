@@ -52,14 +52,14 @@ class SiswaImport implements ToCollection
                 $errors[] = "Baris " . ($index + 1) . ": Nama tidak valid.";
             }
 
-            if (!is_numeric($tanggal_lahir)) {
-                $errors[] = "Baris " . ($index + 1) . ": Tanggal lahir tidak valid atau tidak berformat Excel.";
-            } else {
-                try {
+            try {
+                if (is_numeric($tanggal_lahir)) {
                     $tanggal = Date::excelToDateTimeObject($tanggal_lahir);
-                } catch (\Exception $e) {
-                    $errors[] = "Baris " . ($index + 1) . ": Tanggal lahir tidak bisa dikonversi.";
+                } else {
+                    $tanggal = \Carbon\Carbon::parse($tanggal_lahir);
                 }
+            } catch (\Exception $e) {
+                $errors[] = "Baris " . ($index + 1) . ": Tanggal lahir tidak valid.";
             }
 
             // Validasi kelas untuk wakel
@@ -79,7 +79,7 @@ class SiswaImport implements ToCollection
             Siswa::create([
                 'id' => $row[0],
                 'nama' => $row[1],
-                'tanggal_lahir' => Date::excelToDateTimeObject($row[2]),
+                'tanggal_lahir' => $tanggal,
                 'kelas_id' => $row[3],
             ]);
         }

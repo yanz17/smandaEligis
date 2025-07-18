@@ -51,7 +51,7 @@
         @for ($i = 1; $i <= 5; $i++)
             <div>
                 <label class="block mb-1">Semester {{ $i }}</label>
-                <input type="number" step="0.01" name="sem_{{ $i }}" required class="input input-bordered w-4xs text-black" value="{{ old('sem_'.$i) }}">
+                <input type="number" step="0.01" name="sem_{{ $i }}" required class="input input-bordered w-4xs text-white" value="{{ old('sem_'.$i) }}">
                 @error('sem_'.$i)
                     <span class="text-sm text-red-500">{{ $message }}</span>
                 @enderror
@@ -62,7 +62,7 @@
     <div class="flex flex-row gap-3 mb-0">
         <div>
             <label class="block mb-1">Juara</label>
-            <select id="juara" class="select select-bordered w-4xs text-black">
+            <select id="juara" class="select select-bordered w-4xs text-white">
                 <option value="">Pilih Juara</option>
                 <option value="1" {{ old('juara') == '1' ? 'selected' : '' }}>Juara 1</option>
                 <option value="2" {{ old('juara') == '2' ? 'selected' : '' }}>Juara 2</option>
@@ -72,7 +72,7 @@
         
         <div>
             <label class="block mb-1">Tingkat</label>
-            <select id="tingkat" class="select select-bordered w-4xs text-black">
+            <select id="tingkat" class="select select-bordered w-4xs text-white">
                 <option value="">Pilih Tingkat</option>
                 <option value="kecamatan" {{ old('tingkat') == 'kecamatan' ? 'selected' : '' }}>Kecamatan</option>
                 <option value="kabupaten" {{ old('tingkat') == 'kabupaten' ? 'selected' : '' }}>Kabupaten</option>
@@ -84,7 +84,7 @@
         
         <div>
             <label class="block mb-1">Nilai Prestasi</label>
-            <input type="number" step="0.1" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-black" readonly required value="{{ old('prestasi') }}">
+            <input type="number" step="0.1" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-white" readonly required value="{{ old('prestasi') }}">
             @error('prestasi')
                 <span class="text-sm text-red-500">{{ $message }}</span>
             @enderror

@@ -24,7 +24,7 @@
         @for ($i = 1; $i <= 5; $i++)
             <div>
                 <label class="block mb-1">Semester {{ $i }}</label>
-                <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-4xs text-black"
+                <input type="number" step="0.01" name="sem_{{ $i }}" class="input input-bordered w-4xs text-white"
                     value="{{ old("sem_$i", number_format($nilai["sem_$i"], 2, '.', '')) }}">
             </div>
         @endfor
@@ -33,7 +33,7 @@
     <div class="flex flex-row gap-3 mb-1">
         <div>
             <label class="block mb-1">Juara</label>
-            <select name="juara" id="juara" class="select select-bordered w-4xs text-black">
+            <select name="juara" id="juara" class="select select-bordered w-4xs text-white">
                 <option value="">Pilih Juara</option>
                 @for ($j = 1; $j <= 3; $j++)
                     <option value="{{ $j }}" {{ $nilai->juara == $j ? 'selected' : '' }}>Juara {{ $j }}</option>
@@ -43,7 +43,7 @@
     
         <div>
             <label class="block mb-1">Tingkat Prestasi</label>
-            <select name="tingkat" id="tingkat" class="select select-bordered w-4xs text-black">
+            <select name="tingkat" id="tingkat" class="select select-bordered w-4xs text-white">
                 @php
                     $tingkatan = ['kecamatan', 'kabupaten', 'provinsi', 'nasional', 'internasional'];
                 @endphp
@@ -58,7 +58,7 @@
     
         <div>
             <label class="block mb-1">Nilai Prestasi</label>
-            <input type="text" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-black" 
+            <input type="text" name="prestasi" id="prestasi" class="input input-bordered w-4xs text-white" 
                 value="{{ old('prestasi', $nilai->prestasi) }}" readonly>
         </div>
     </div>
